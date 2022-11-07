@@ -8,12 +8,12 @@ addpath('../../networktools')
 addpath('../../networktools/gui')
 %%
 % original image file, not segmented, will be used for visualization only
-origimgfile = '../imgData/MCFO-HSE-1.tif'; %simpler with no loops
+origimgfile = './example/MCFO-HSE-1.tif'; %simpler with no loops
 
 
 % single-frame image file for a black and white image (can be skeletonized
 % already, or merely segmented)
-bwimgfile = '../imgData/MCFO-HSE-1_skeleton.tif';
+bwimgfile = './example/MCFO-HSE-1_skeleton.tif';
 
 % load the images
 img = imread(origimgfile);
