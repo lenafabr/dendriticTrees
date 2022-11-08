@@ -6,10 +6,15 @@
 
 addpath('../../networktools')
 addpath('../../networktools/gui')
-%%
+
+%% if network has been previously processed, load in the workspace
+% and skip the network cleaning steps below
+load('./example/cleanNetwork_MCFO-HSE-1.mat','NT','origimgfile','img','umperpx')
+
+% ------------------ EDITING AND MEASURING NETWORK ---------------
+%% Load image files
 % original image file, not segmented, will be used for visualization only
 origimgfile = './example/MCFO-HSE-1.tif'; %simpler with no loops
-
 
 % single-frame image file for a black and white image (can be skeletonized
 % already, or merely segmented)
@@ -18,9 +23,11 @@ bwimgfile = './example/MCFO-HSE-1_skeleton.tif';
 % load the images
 img = imread(origimgfile);
 bwimg = imread(bwimgfile);
-%% in case of rgb - use relevant channel
+
+% in case of rgb - use relevant channel
 cno = 1;
 img = img(:,:,cno);
+
 
 %% Extract a network object structure from the black and while image
 % this step can be  slow for a large image and has not been fully optimized
@@ -60,7 +67,10 @@ save('../imgData/mysavefile.mat','NT','img','plotopt')
 networkEdit('NT',NT,'img',img,'plotopt',plotopt)
 
 %% after editing is a good time to save your work
-save('../imgData/mysavefile_cleaned.mat','NT','img','plotopt')
+
+% specify in how many microns per pixels for our cell (to make real length units)
+umperpx = 0.30145
+save('../imgData/mysavefile_cleaned.mat')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -68,9 +78,8 @@ save('../imgData/mysavefile_cleaned.mat','NT','img','plotopt')
 % Network must be directed, have no loops, and no degree 2 nodes.
 
 %% load a workspace and set scale factor for convertion to um units
-load(['mysavefile_cleaned.mat'])
-%% specify in how many microns per pixels for our cell (to make real length units)
-umperpx = 0.3014552; 
+load('./example/cleanNetwork_MCFO-HSE-1.mat','NT','origimgfile','img','umperpx')
+
 
 %% Check that network has been properly cleaned.
 % set trunk edge 
@@ -109,7 +118,7 @@ end
 defaultWidth = 10;
 propagateEdgeWidths(NT,NaN,defaultWidth)
 
-% define a single radius for each edge, in um units
+%% define a single radius for each edge, in um units
 % for now, this will be the average of all measured radii on the edge
 for ec = 1:NT.nedge
     radii(ec) = mean(NT.edgewidth{ec}(:,1),1)/2*umperpx;
