@@ -125,6 +125,7 @@ for ec = 1:NT.nedge
 end
 
 %% calculate subtree statistics from the defined radii
+% subtrees are indexed by trunk edge
 stL = []; stV = []; stD = [];
 [stL,stV,stD] = setSubtreeInfo_fromRadii(NT,trunkedge,stL,stV,stD,radii)
 
@@ -158,7 +159,7 @@ avgasym = sqrt(sum(asymmetry(nontermjunc).^2)/length(nontermjunc))
 % first define what we consider distal edges
 % distal = all edges with path length > this factor * max path length (from
 % root node)
-cutoff = 0.75
+cutoff = 0.75;
 
 % distance of each edge from root node
 [edgedist] = getEdgeDist(NT,trunkedge);
@@ -177,7 +178,7 @@ distenrich = (Mdist/Vdist) / (rhovals(trunkedge)/radii(trunkedge).^2)
 % If you want to determine synthetic radii for the tree edges:
 clear stL stEta stD muvals
 a = 2; % alpha value relating parent and daughter width: r0^a = r1^a + r2^a
-rm = 0; % `minimal radius' such that r0^a + rm^a = r1^a + r2^a
+rm = 0; % `minimal radius' (from Liao paper) such that r0^a + rm^a = r1^a + r2^a
 
 % how to split radii. Possible values:
 % LV = split so that subtree L ~ V; does *not* use rm
@@ -185,6 +186,9 @@ rm = 0; % `minimal radius' such that r0^a + rm^a = r1^a + r2^a
 % L = split so that branch radius ~ subtree length
 % equal = split equally
 splittype = 'LV';
+
+% define radius of trunk
+rtrunk = NT.edgewidth{trunkedge}(1,1);
 
 
 % calculate some basic statistics
@@ -205,20 +209,23 @@ end
 % after setting synthetic radii, can go back to "calculate mitochondria
 % concentrations", get asymmetry and distal enrichment
 
+%% to visualize the radii in gui, store fake width info in tree
+for ec = 1:NT.nedge
+    NT.edgewidth{ec} = makeEdgeWidth(NT,ec,radii(ec)/umperpx);
+end
+
 
 % --------------------
 %% Plot network with widths and mito densities
 % --------------------
 
-%% plot widths after adjustments
-% if widths already measured, plot those
 figure
 
 % colors to scale between
 color2 = [0.2, 0.8,0.8];     
 color1 = [0,  0,  0]; 
 % scaling factor for edge widths
-sclwidth = 0.5;
+sclwidth = 0.2;
 
 nedge = NT.nedge;
 cmap = colormapinterp([color1;color2],nedge);
