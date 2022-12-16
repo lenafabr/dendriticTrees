@@ -88,6 +88,8 @@ rootedges = NT.nodeedges(NT.rootnode,1:NT.degrees(NT.rootnode));
 [~,ind] = max(NT.edgelens(rootedges));
 trunkedge = rootedges(ind);
 
+disp('Running checks on network structure')
+
 if (NT.degrees(NT.rootnode)>1)
     warning('Root node has degree > 1. May break code!')
 end
@@ -185,7 +187,8 @@ rm = 0; % `minimal radius' (from Liao paper) such that r0^a + rm^a = r1^a + r2^a
 % LD = split so that branch radius ~ subtree length / depth
 % L = split so that branch radius ~ subtree length
 % equal = split equally
-splittype = 'LV';
+splittype = 'equal';
+
 
 % define radius of trunk
 rtrunk = NT.edgewidth{trunkedge}(1,1);
