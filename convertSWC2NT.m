@@ -2,11 +2,8 @@ function [NT,mergednodes] = convertSWC2NT(exTree)
 % convert an SWC tree structure, extracted from a .swc file using load_tree
 % into a network object structure
 % all degree 2 nodes get merged away and long edges saved as edgepath
-% edge widths:
-% if there are intermediate (deg 2) nodes along an edge, widths are stored
-% for all of the intermediate nodes, but not the end nodes
-% if there are no intermediate nodes, then width of the edge is stored for the
-% downstream end node only
+% edge widths are stored for all intermediate nodes and downstream node
+% along edge
 % NOTEs: 
 % assumes node 1 is the parent node
 % the order of edges in the resulting network gets mixed around
