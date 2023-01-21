@@ -1,4 +1,6 @@
+% update the path names here to match your system
 addpath(genpath('../treestoolbox-master/'))
+addpath('../../networktools')
 
 %% load tree data from an SWC file
 swcfile = './example/1.VS-brain1_left_220811.swc';
