@@ -47,3 +47,27 @@ xlabel('L/D asymmetry')
 ylabel('r^2 asymmetry')
 
 mdl = fitlm(xvals,yvals)
+mdl.plot()
+
+%% Plot r^2 and L asymmetries
+figure
+xvals = datatable.("L_asym");
+yvals = datatable.("r^2_asym");
+
+plot(xvals,yvals,'.')
+xlabel('L asymmetry')
+ylabel('r^2 asymmetry')
+
+mdl = fitlm(xvals,yvals)
+mdl.plot()
+%% Plot r^2 and D asymmetries
+figure
+xvals = datatable.("D_asym");
+yvals = datatable.("r^2_asym");
+
+plot(xvals,yvals,'.')
+xlabel('D asymmetry')
+ylabel('r^2 asymmetry')
+
+mdl = fitlm(xvals,yvals)
+mdl.plot()
