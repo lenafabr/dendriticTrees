@@ -17,9 +17,9 @@ for ec = 1:NT.nedge
         continue
     end
     
-    edge1 = NT.nodeedges(junc,2);
-    edge2 = NT.nodeedges(junc,3);
-    if (NT.degrees(edge1)==1 & NT.degrees(edge2)==1);
+    edge1 = NT.nodeedges(junc,2); n1 = NT.nodenodes(junc,2);
+    edge2 = NT.nodeedges(junc,3); n2 = NT.nodenodes(junc,3);
+    if (NT.degrees(n1)==1 & NT.degrees(n2)==1);
         terminaljunc(ec) = true;
     else
         nontermjunc = [nontermjunc ec];
