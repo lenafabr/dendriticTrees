@@ -3,7 +3,7 @@ function rootnode = setRootNode(NT)
 % set the root node of a tree as one that has an outgoing edge but no
 % incoming ones
 % WARNING: this assumes the tree has edges oriented to point along a
-% directed tree
+% directed tree (based on edgenodes array)
 for nc = 1:NT.nnode
     % is there an outgoing edge from this node?
     hasout = any(NT.edgenodes(:,1)==nc);
