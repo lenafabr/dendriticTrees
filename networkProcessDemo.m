@@ -187,7 +187,7 @@ rm = 0; % `minimal radius' (from Liao paper) such that r0^a + rm^a = r1^a + r2^a
 % LD = split so that branch radius ~ subtree length / depth
 % L = split so that branch radius ~ subtree length
 % equal = split equally
-splittype = 'equal';
+splittype = 'LD';
 
 
 % define radius of trunk

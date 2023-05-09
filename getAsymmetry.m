@@ -1,6 +1,7 @@
 function [asymmetry,nontermjunc] = getAsymmetry(NT,stM, stV)
 % calculate asymmetry in mitochondrial volume density
-% for network with radii and mitochondrial concentrations precalculated
+% for network with radii and mitochondria distribution precalculated
+% stM = total mitochondrial load on each subtree
 % nontermjunc = list of nonterminal junctions
 % junctions indexed by edge leading up to them
 
