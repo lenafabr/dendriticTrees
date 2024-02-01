@@ -1,4 +1,4 @@
-function [stL,stEta,stD,muvals] = setSubtreeInfo(NT,trunkedge,a,splittype,stL,stEta,stD,muvals)
+function [stL,stEta,stD,muvals,stN] = setSubtreeInfo(NT,trunkedge,a,splittype,stL,stEta,stD,muvals,stN)
 % walk down a tree, starting with the trunkedge
 % compute information on subtrees based on tree topologies 
 % no initial assumptions made on the absolute radii. No assumptions on
@@ -8,7 +8,7 @@ function [stL,stEta,stD,muvals] = setSubtreeInfo(NT,trunkedge,a,splittype,stL,st
 % stEta = eta value for the subtree below each junction
 % defined by: V_subtree = eta*r_trunk^2
 % muvals = r_1^alpha/r_0^alpha (daughter vs parent) for each junction
-
+% stN = number of distal tips in each subtree
 
 % if input stL, stEta, muvals arrays not provided (or empty), initialize to zeros
 if (~exist('stL','var'))
@@ -26,6 +26,10 @@ end
 if (~exist('muvals','var'))
     % initialize all arrays to 0
     muvals = zeros(1,NT.nedge);    
+end
+if (~exist('stN','var'))
+    % initialize all arrays to 0
+    stN = zeros(1,NT.nedge);    
 end
 if (isempty(stL))
     % initialize all arrays to 0
@@ -57,6 +61,7 @@ if (NT.degrees(junc)==1)
     stD(trunkedge) = ell0;
     muvals(trunkedge) = 0;
     stL(trunkedge) = ell0;
+    stN(trunkedge) = 1;
 
 elseif (NT.degrees(junc)==2)
     error('not set up to deal with deg 2 nodes yet')
@@ -68,12 +73,15 @@ elseif (NT.degrees(junc)==3)
     
     % compute subtree properties for the daughter trunks
     % including radii splitting (mu) for all downstream junctions
-    [stL,stEta,stD,muvals] = setSubtreeInfo(NT,edge1,a,splittype,stL,stEta,stD,muvals);
-    [stL,stEta,stD,muvals] = setSubtreeInfo(NT,edge2,a,splittype,stL,stEta,stD,muvals);
+    [stL,stEta,stD,muvals,stN] = setSubtreeInfo(NT,edge1,a,splittype,stL,stEta,stD,muvals,stN);
+    [stL,stEta,stD,muvals,stN] = setSubtreeInfo(NT,edge2,a,splittype,stL,stEta,stD,muvals,stN);
     
     % tree length
     stL(trunkedge) = stL(edge1)+stL(edge2)+ell0;    
     
+    % number of tips
+    stN(trunkedge) = stN(edge1)+stN(edge2);
+
     % solve for the radii splitting (mu at the current junction)                
     switch(splittype)
         case('LV')
