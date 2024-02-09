@@ -90,12 +90,15 @@ elseif (NT.degrees(junc)==3)
             muvals(trunkedge) = 1/(1+((stL(edge2)/stEta(edge2))/(stL(edge1)/stEta(edge1)))^(a/2));                       
         case('L/D')
             % split by bushiness, in proportion to L/D
-            muvals(trunkedge) = 1/(1+((stL(edge2)/stD(edge2))/(stL(edge1)/stD(edge1)))^(a/2));                       
+            muvals(trunkedge) = 1/(1+((stL(edge2)/stD(edge2))/(stL(edge1)/stD(edge1)))^(a/2));
+        case('L')
+            % split by bushiness, in proportion to L/D
+            muvals(trunkedge) = 1/(1+((stL(edge2))/(stL(edge1)))^(a/2)); 
         case('equal')
             % split to equal radii
             muvals(trunkedge) = 0.5;
         otherwise
-            error(sprintf('Not a valid value for splittype: %s. Must be LV,?',splittype))
+            error(sprintf('Not a valid value for splittype: %s. Must be LV,L/D,L,equal',splittype))
     end
     
     % tree volume (relative to trunk area)
